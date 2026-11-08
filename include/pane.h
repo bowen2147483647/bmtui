@@ -2,17 +2,20 @@
 #include"debug_option.h"
 #include<string>
 #include<vector>
-struct TerminalChar{
-	wchar_t ch;
-	uint8_t frontcolor;
-	uint8_t backgroundcolor;
+#include<cstdint>
+#include<cstddef>
+#include<sys/types.h>
+struct Cell{
+	wchar_t ch=L' ';
+	uint8_t fg_color=7; //ANSI color
+	uint8_t bg_color=0;
 };
 struct Pane{
 	Pane(int rows,int cols);
 	~Pane();
 	int fd()const;
 	void write_input(const char* data,size_t len);
-	void read_output();
+	bool read_output(); //False means sub process exit
 	void resize(int rows,int cols);
 	void set_rect(int x,int y,int w,int h);
 	void render();
@@ -20,7 +23,7 @@ struct Pane{
 PRIVATE_ON_RELEASE:
 	int pty_fd_=-1;
 	pid_t child_pid_=-1;
-	int rows_,cols_;
+	int rows_=0,cols_=0;
 	int x_=0,y_=0,w_=0,h_=0;
-	std::vector<TerminalChar> screen_;
+	std::vector<Cell> screen_;
 };

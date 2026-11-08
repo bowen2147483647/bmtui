@@ -4,3 +4,4 @@
 #else
 #define PRIVATE_ON_RELEASE private
 #endif
+#define IGNORE(x) (void)(x)
