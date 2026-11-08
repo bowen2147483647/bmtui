@@ -33,12 +33,12 @@ int main(int argc,char** argv){
 		if(FD_ISSET(STDIN_FILENO,&fds)){
 			int n=read(STDIN_FILENO,buf,sizeof(buf));
 			if(n<=0)break;
-			write(pDefault.fd(),buf,n);
+			IGNORE(write(pDefault.fd(),buf,n));
 		}
 		if(FD_ISSET(pDefault.fd(),&fds)){
 			int n=read(pDefault.fd(),buf,sizeof(buf));
 			if(n<=0)break;
-			write(STDOUT_FILENO,buf,n);
+			IGNORE(write(STDOUT_FILENO,buf,n));
 		}
 	}
 	leave_fullscreen();

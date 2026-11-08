@@ -1,15 +1,11 @@
 #pragma once
 #include"debug_option.h"
+#include"cell.h"
 #include<string>
 #include<vector>
 #include<cstdint>
 #include<cstddef>
 #include<sys/types.h>
-struct Cell{
-	wchar_t ch=L' ';
-	uint8_t fg_color=7; //ANSI color
-	uint8_t bg_color=0;
-};
 struct Pane{
 	Pane(int rows,int cols);
 	~Pane();
