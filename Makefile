@@ -12,7 +12,7 @@ TARGET	= bmtui
 
 # SRC AND TARGET
 
-SRCS	= $(wildcard $(SRC)/*.cpp)
+SRCS	= $(shell find $(SRC) -name '*.cpp')
 OBJS	= $(SRCS:$(SRC)/%.cpp=$(OBJ)/%.o)
 DEPS	= $(OBJS:.o=.d)
 
@@ -44,13 +44,9 @@ $(TARGET): $(OBJS)
 
 # COMPILE
 
-$(OBJ)/%.o: $(SRC)/%.cpp | $(OBJ)
+$(OBJ)/%.o: $(SRC)/%.cpp
+	@mkdir -p $(@D)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(CXXOPT) -MMD -MP -c $< -o $@
-
-# MAKE DIR
-
-$(OBJ):
-	mkdir -p $(OBJ)
 
 # DEPENDENCIES
 
