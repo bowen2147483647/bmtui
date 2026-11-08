@@ -1,5 +1,7 @@
 #include"debug_option.h"
 #include"pane.h"
+#include"ansi_operation.h"
+#include"getsize.h"
 #include<termios.h>
 #include<unistd.h>
 #include<sys/select.h>
@@ -16,9 +18,11 @@ void exit_raw_mode(struct termios orig){
 int main(int argc,char** argv){
 	IGNORE(argc);
 	IGNORE(argv);
-	Pane pDefault(24,80);
+	struct winsize ws=get_terminal_size();
+	Pane pDefault(ws.ws_row,ws.ws_col);
 	struct termios orig;
 	enter_raw_mode(orig);
+	enter_fullscreen();
 	char buf[4096];
 	while(true){
 		fd_set fds;
@@ -37,6 +41,7 @@ int main(int argc,char** argv){
 			write(STDOUT_FILENO,buf,n);
 		}
 	}
+	leave_fullscreen();
 	exit_raw_mode(orig);
 	return 0;
 }
