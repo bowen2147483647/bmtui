@@ -5,7 +5,6 @@
 #include<cstring>
 #include<cerrno>
 Pane::Pane(int rows,int cols):rows_(rows),cols_(cols){
-	screen_.resize(rows*cols);
 	struct winsize ws;
 	ws.ws_row=rows;
 	ws.ws_col=cols;

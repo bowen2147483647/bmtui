@@ -2,6 +2,10 @@
 #include"pane.h"
 #include"ansi_operation.h"
 #include"getsize.h"
+#include"screen.h"
+#include"vt.h"
+#include"renderer.h"
+#include<cstddef>
 #include<termios.h>
 #include<unistd.h>
 #include<sys/select.h>
@@ -20,10 +24,15 @@ int main(int argc,char** argv){
 	IGNORE(argv);
 	struct winsize ws=get_terminal_size();
 	Pane pDefault(ws.ws_row,ws.ws_col);
+	Screen screen(ws.ws_row,ws.ws_col);
+	VtParser vt(screen);
+	Renderer renderer(STDOUT_FILENO);
 	struct termios orig;
 	enter_raw_mode(orig);
 	enter_fullscreen();
+	renderer.draw(screen);
 	char buf[4096];
+	bool dirty=false;
 	while(true){
 		fd_set fds;
 		FD_ZERO(&fds);
@@ -38,7 +47,12 @@ int main(int argc,char** argv){
 		if(FD_ISSET(pDefault.fd(),&fds)){
 			int n=read(pDefault.fd(),buf,sizeof(buf));
 			if(n<=0)break;
-			IGNORE_VALUE(write(STDOUT_FILENO,buf,n));
+			vt.feed(buf,(std::size_t)n);
+			dirty=true;
+		}
+		if(dirty){
+			renderer.draw(screen);
+			dirty=false;
 		}
 	}
 	leave_fullscreen();

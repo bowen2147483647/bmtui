@@ -38,6 +38,8 @@ void append_cup(std::string& out,int row,int col){
 	append_uint(out,(unsigned)(col+1));
 	out+="H";
 }
+Renderer::Renderer(int out_fd):out_fd_(out_fd){
+}
 void Renderer::draw(const Screen& s){
 	buf_.clear();
 	buf_.append("\033[?25l");

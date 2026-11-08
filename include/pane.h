@@ -1,9 +1,5 @@
 #pragma once
 #include"debug_option.h"
-#include"cell.h"
-#include<string>
-#include<vector>
-#include<cstdint>
 #include<cstddef>
 #include<sys/types.h>
 struct Pane{
@@ -21,5 +17,4 @@ PRIVATE_ON_RELEASE:
 	pid_t child_pid_=-1;
 	int rows_=0,cols_=0;
 	int x_=0,y_=0,w_=0,h_=0;
-	std::vector<Cell> screen_;
 };
