@@ -33,7 +33,7 @@ release: $(TARGET)
 
 # DEBUG
 
-debug: CXXOPT := -g -O0 -fsanitize=address,undefined
+debug: CXXOPT := -DDEBUG -g -O0 -fsanitize=address,undefined
 debug: LDFLAGS := -fsanitize=address,undefined
 debug: $(TARGET)
 
