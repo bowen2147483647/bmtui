@@ -1,5 +1,6 @@
 #pragma once
 #include"cell.h"
+#include"debug_option.h"
 #include<vector>
 struct Screen{
 	Screen(int rows,int cols);
@@ -18,7 +19,8 @@ struct Screen{
 	void clear();
 PRIVATE_ON_RELEASE:
 	Cell& cell_at(int row,int col);
-	Cell& int_at(int row,int col);
+	Cell& int_at(std::size_t row,std::size_t col);
+	const Cell& int_at(std::size_t row,std::size_t col)const;
 	void scroll_up();
 	int rows_=0,cols_=0;
 	int cursor_row_=0,cursor_col_=0;

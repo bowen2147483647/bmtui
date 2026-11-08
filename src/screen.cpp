@@ -4,10 +4,10 @@
 int clamp_positive(int v){
 	return v>0?v:1;
 }
-Screen::screen(int rows,int cols):
+Screen::Screen(int rows,int cols):
 	rows_(clamp_positive(rows)),
 	cols_(clamp_positive(cols)),
-	cells((std::size_t)(rows_)*(std::size_t)(cols_)){
+	cells_((std::size_t)(rows_)*(std::size_t)(cols_)){
 	}
 int Screen::rows()const{
 	return rows_;
@@ -18,7 +18,7 @@ int Screen::cols()const{
 void Screen::resize(int rows,int cols){
 	rows_=clamp_positive(rows);
 	cols_=clamp_positive(cols);
-	cells.assign((std::size_t)(rows_)*(std::size_t)(cols_),Cell{});
+	cells_.assign((std::size_t)(rows_)*(std::size_t)(cols_),Cell{});
 	if(cursor_row_>=rows_)cursor_row_=rows_-1;
 	if(cursor_col_>=cols_)cursor_col_=cols_-1;
 	wrapped_=false;
@@ -28,8 +28,11 @@ const Cell& Screen::at(int row,int col)const{
 	if(row<0||col<0||row>=rows_||col>=cols_)return cBlank;
 	return int_at((std::size_t)row,(std::size_t)col);
 }
-Cell& Screen::int_at(std::size_t row,std::size_t col)const{
-	return cells_[row*cols_+col];
+Cell& Screen::int_at(std::size_t row,std::size_t col){
+	return cells_[row*(std::size_t)cols_+col];
+}
+const Cell& Screen::int_at(std::size_t row,std::size_t col)const{
+	return cells_[row*(std::size_t)cols_+col];
 }
 Cell& Screen::cell_at(int row,int col){
 	row=std::clamp(row,0,rows_-1);
@@ -69,7 +72,7 @@ void Screen::newline(){
 		scroll_up();
 	}
 	else{
-		cursor_row__++;
+		cursor_row_++;
 	}
 }
 void Screen::carriage_return(){
@@ -83,7 +86,7 @@ void Screen::backspace(){
 void Screen::tab(){
 	wrapped_=false;
 	const int kTabWidth=8;
-	int next=(cursor_col_/kTabWidth+1)*kTabWidth;
+	cursor_col_=(cursor_col_/kTabWidth+1)*kTabWidth;
 	if(cursor_col_+1>=cols_){
 		cursor_col_=cols_+1;
 		wrapped_=true;
@@ -96,8 +99,8 @@ void Screen::clear(){
 	wrapped_=false;
 }
 void Screen::scroll_up(){
-	cells_.erase(cells_.begin(),cells_begin()+
+	cells_.erase(cells_.begin(),cells_.begin()+
 			(std::ptrdiff_t)(std::size_t)cols_);
-	cells_.resize((std::size_t)rows_*width,Cell{});
+	cells_.resize((std::size_t)rows_*(std::size_t)cols_,Cell{});
 }
 

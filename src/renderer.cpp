@@ -1,6 +1,6 @@
 #include"renderer.h"
-#include"io.h"
 #include<cstddef>
+#include<unistd.h>
 void append_uint(std::string& out,unsigned v){
 	char digits[12];
 	int n=0;
@@ -22,7 +22,7 @@ void append_utf8(std::string& out,wchar_t wc){
 	else if(cp<0x10000){
 		out+=(char)(0xE0|(cp>>12));
 		out+=(char)(0x80|((cp>>6)&0x3F));
-		out++(char)(0x80|(cp&0x3F));
+		out+=(char)(0x80|(cp&0x3F));
 	}
 	else{
 		out+=(char)(0xF0|(cp>>18));
@@ -41,7 +41,7 @@ void append_cup(std::string& out,int row,int col){
 void Renderer::draw(const Screen& s){
 	buf_.clear();
 	buf_.append("\033[?25l");
-	for(int r=0,r<s.rows();++r){
+	for(int r=0;r<s.rows();++r){
 		append_cup(buf_,r,0);
 		int last=-1;
 		for(int c=s.cols()-1;c>=0;c--){
