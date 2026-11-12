@@ -5,9 +5,9 @@
 struct Pane{
 	Pane(int rows,int cols);
 	~Pane();
+	Pane(const Pane&)=delete;
+	Pane& operator=(const Pane&)=delete;
 	int fd()const;
-	void write_input(const char* data,size_t len);
-	bool read_output(); //False means sub process exit
 	void resize(int rows,int cols);
 	void set_rect(int x,int y,int w,int h);
 	void render();

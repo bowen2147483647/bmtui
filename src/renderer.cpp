@@ -1,4 +1,5 @@
 #include"renderer.h"
+#include"ansi_operation.h"
 #include<cstddef>
 #include<unistd.h>
 void append_uint(std::string& out,unsigned v){
@@ -57,5 +58,5 @@ void Renderer::draw(const Screen& s){
 	}
 	append_cup(buf_,s.cursor_row(),s.cursor_col());
 	buf_.append("\033[?25h");
-	IGNORE_VALUE(write(out_fd_,buf_.data(),buf_.size()));
+	write_all(out_fd_,buf_.data(),buf_.size());
 }

@@ -1,7 +1,7 @@
 # COMPILER DEFINITIONS
 CXX	= g++
 CXXOPT	=
-CXXFLAGS= -Wall -Wextra -std=c++17 -Wpedantic -Werror -fstack-protector-strong
+CXXFLAGS= -fanalyzer -Wall -Wextra -std=c++17 -Wpedantic -Werror -fstack-protector-strong
 LDFLAGS	=
 
 # DIR DEFINITIONS
