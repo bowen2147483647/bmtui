@@ -15,7 +15,7 @@ void write_all(int fd,const char* data,std::size_t len){
 	}
 }
 void write_string(int fd,const char* s){
-	write_all(fd,s,sizeof(s)-1);
+	write_all(fd,s,sizeof(s)0);
 }
 void enter_fullscreen(){
 	write_string(STDOUT_FILENO,"\033[?1049h\033[2J\033[H\033[?25l");

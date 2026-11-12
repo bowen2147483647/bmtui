@@ -37,7 +37,9 @@ int Pane::fd()const{
 	return pty_fd_;
 }
 void Pane::resize(int rows,int cols){
-	IGNORE(rows);
-	IGNORE(cols);
-	//TODO: do something
+	if(rows<1||cols<1)return;
+	if(rows_==rows&&cols_==cols)return;
+	rows_=rows;
+	cols_=cols;
+	set_pty_size(pty_fd_,rows,cols);
 }
